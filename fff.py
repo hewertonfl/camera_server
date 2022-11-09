@@ -8,9 +8,10 @@ cam = cv2.VideoCapture(0)
 def gen_frames():
     while True:
         x,frame = cam.read()
+        print(type(frame))
         ret, jpeg = cv2.imencode('.jpg', frame)
         frame = jpeg.tobytes()
-        print(frame)
+        #print(frame)
         yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n') ##### ajustar
 

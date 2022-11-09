@@ -1,20 +1,26 @@
 import subprocess
 import cv2
 import numpy as np
+import io
 from flask import Flask, render_template, Response
 
-p = subprocess.Popen((['python','camera.py']), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
 app = Flask(__name__)
 
 
 def camera():
-    frame = p.communicate()
-    frame = np.array(frame)
-    frame = frame.tobytes()
-    print(frame)
+    p = subprocess.Popen((['python','camera.py']),shell= False,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    frame = p.stdout.read()
+    stream_str = io.BytesIO(frame)
+    print(stream_str.getvalue())
+    #frame = np.fromstring(frame, dtype=int, sep=' ')
+    #frame = np.array(frame)
+    #print(frame)
+    # frame = frame.tobytes()
+    
     # yield (b'--frame\r\n'
-    #            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-    # # p.stdout.flush()
+    #             b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+    # p.stdout.flush()
 
 @app.route('/')
 def index():
