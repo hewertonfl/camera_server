@@ -38,8 +38,8 @@ def consume_frames(q):
             # cv2.waitKey(100)
     except KeyboardInterrupt:
         pass
-    finally:
-        shm.close()
+    # finally:
+    #     shm.close()
 
 
 app = Flask(__name__)
